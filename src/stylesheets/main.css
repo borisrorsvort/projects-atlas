@@ -1,0 +1,11 @@
+:root {
+  --red: red;
+}
+
+body {
+  color: color(var(--red) a(54%));
+}
+
+.oorl {
+  background: red;
+}

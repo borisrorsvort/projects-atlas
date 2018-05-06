@@ -20,7 +20,7 @@ function isDate (argument) {
   return argument instanceof Date
 }
 
-var index$5 = isDate;
+var is_date = isDate;
 
 var MILLISECONDS_IN_HOUR = 3600000;
 var MILLISECONDS_IN_MINUTE = 60000;
@@ -96,7 +96,7 @@ var parseTokenTimezoneHHMM = /^([+-])(\d{2}):?(\d{2})$/;
  * //=> Fri Apr 11 2014 00:00:00
  */
 function parse (argument, dirtyOptions) {
-  if (index$5(argument)) {
+  if (is_date(argument)) {
     // Prevent the date to lose the milliseconds when passed to new Date() in IE10
     return new Date(argument.getTime())
   } else if (typeof argument !== 'string') {
@@ -339,25 +339,25 @@ function dayOfISOYear (isoYear, week, day) {
   return date
 }
 
-var index$3 = parse;
+var parse_1 = parse;
 
 function startOfYear (dirtyDate) {
-  var cleanDate = index$3(dirtyDate);
+  var cleanDate = parse_1(dirtyDate);
   var date = new Date(0);
   date.setFullYear(cleanDate.getFullYear(), 0, 1);
   date.setHours(0, 0, 0, 0);
   return date
 }
 
-var index$7 = startOfYear;
+var start_of_year = startOfYear;
 
 function startOfDay (dirtyDate) {
-  var date = index$3(dirtyDate);
+  var date = parse_1(dirtyDate);
   date.setHours(0, 0, 0, 0);
   return date
 }
 
-var index$11 = startOfDay;
+var start_of_day = startOfDay;
 
 var MILLISECONDS_IN_MINUTE$1 = 60000;
 var MILLISECONDS_IN_DAY = 86400000;
@@ -383,8 +383,8 @@ var MILLISECONDS_IN_DAY = 86400000;
  * //=> 366
  */
 function differenceInCalendarDays (dirtyDateLeft, dirtyDateRight) {
-  var startOfDayLeft = index$11(dirtyDateLeft);
-  var startOfDayRight = index$11(dirtyDateRight);
+  var startOfDayLeft = start_of_day(dirtyDateLeft);
+  var startOfDayRight = start_of_day(dirtyDateRight);
 
   var timestampLeft = startOfDayLeft.getTime() -
     startOfDayLeft.getTimezoneOffset() * MILLISECONDS_IN_MINUTE$1;
@@ -397,21 +397,21 @@ function differenceInCalendarDays (dirtyDateLeft, dirtyDateRight) {
   return Math.round((timestampLeft - timestampRight) / MILLISECONDS_IN_DAY)
 }
 
-var index$9 = differenceInCalendarDays;
+var difference_in_calendar_days = differenceInCalendarDays;
 
 function getDayOfYear (dirtyDate) {
-  var date = index$3(dirtyDate);
-  var diff = index$9(date, index$7(date));
+  var date = parse_1(dirtyDate);
+  var diff = difference_in_calendar_days(date, start_of_year(date));
   var dayOfYear = diff + 1;
   return dayOfYear
 }
 
-var index$1 = getDayOfYear;
+var get_day_of_year = getDayOfYear;
 
 function startOfWeek (dirtyDate, dirtyOptions) {
   var weekStartsOn = dirtyOptions ? (Number(dirtyOptions.weekStartsOn) || 0) : 0;
 
-  var date = index$3(dirtyDate);
+  var date = parse_1(dirtyDate);
   var day = date.getDay();
   var diff = (day < weekStartsOn ? 7 : 0) + day - weekStartsOn;
 
@@ -420,27 +420,27 @@ function startOfWeek (dirtyDate, dirtyOptions) {
   return date
 }
 
-var index$17 = startOfWeek;
+var start_of_week = startOfWeek;
 
 function startOfISOWeek (dirtyDate) {
-  return index$17(dirtyDate, {weekStartsOn: 1})
+  return start_of_week(dirtyDate, {weekStartsOn: 1})
 }
 
-var index$15 = startOfISOWeek;
+var start_of_iso_week = startOfISOWeek;
 
 function getISOYear (dirtyDate) {
-  var date = index$3(dirtyDate);
+  var date = parse_1(dirtyDate);
   var year = date.getFullYear();
 
   var fourthOfJanuaryOfNextYear = new Date(0);
   fourthOfJanuaryOfNextYear.setFullYear(year + 1, 0, 4);
   fourthOfJanuaryOfNextYear.setHours(0, 0, 0, 0);
-  var startOfNextYear = index$15(fourthOfJanuaryOfNextYear);
+  var startOfNextYear = start_of_iso_week(fourthOfJanuaryOfNextYear);
 
   var fourthOfJanuaryOfThisYear = new Date(0);
   fourthOfJanuaryOfThisYear.setFullYear(year, 0, 4);
   fourthOfJanuaryOfThisYear.setHours(0, 0, 0, 0);
-  var startOfThisYear = index$15(fourthOfJanuaryOfThisYear);
+  var startOfThisYear = start_of_iso_week(fourthOfJanuaryOfThisYear);
 
   if (date.getTime() >= startOfNextYear.getTime()) {
     return year + 1
@@ -451,18 +451,18 @@ function getISOYear (dirtyDate) {
   }
 }
 
-var index$21 = getISOYear;
+var get_iso_year = getISOYear;
 
 function startOfISOYear (dirtyDate) {
-  var year = index$21(dirtyDate);
+  var year = get_iso_year(dirtyDate);
   var fourthOfJanuary = new Date(0);
   fourthOfJanuary.setFullYear(year, 0, 4);
   fourthOfJanuary.setHours(0, 0, 0, 0);
-  var date = index$15(fourthOfJanuary);
+  var date = start_of_iso_week(fourthOfJanuary);
   return date
 }
 
-var index$19 = startOfISOYear;
+var start_of_iso_year = startOfISOYear;
 
 var MILLISECONDS_IN_WEEK = 604800000;
 
@@ -484,8 +484,8 @@ var MILLISECONDS_IN_WEEK = 604800000;
  * //=> 53
  */
 function getISOWeek (dirtyDate) {
-  var date = index$3(dirtyDate);
-  var diff = index$15(date).getTime() - index$19(date).getTime();
+  var date = parse_1(dirtyDate);
+  var diff = start_of_iso_week(date).getTime() - start_of_iso_year(date).getTime();
 
   // Round the number of days to the nearest integer
   // because the number of milliseconds in a week is not constant
@@ -493,17 +493,17 @@ function getISOWeek (dirtyDate) {
   return Math.round(diff / MILLISECONDS_IN_WEEK) + 1
 }
 
-var index$13 = getISOWeek;
+var get_iso_week = getISOWeek;
 
 function isValid (dirtyDate) {
-  if (index$5(dirtyDate)) {
+  if (is_date(dirtyDate)) {
     return !isNaN(dirtyDate)
   } else {
     throw new TypeError(toString.call(dirtyDate) + ' is not an instance of Date')
   }
 }
 
-var index$23 = isValid;
+var is_valid = isValid;
 
 function buildDistanceInWordsLocale () {
   var distanceInWordsLocale = {
@@ -603,7 +603,7 @@ function buildDistanceInWordsLocale () {
   }
 }
 
-var index$27 = buildDistanceInWordsLocale;
+var build_distance_in_words_locale = buildDistanceInWordsLocale;
 
 var commonFormatterKeys = [
   'M', 'MM', 'Q', 'D', 'DD', 'DDD', 'DDDD', 'd',
@@ -632,7 +632,7 @@ function buildFormattingTokensRegExp (formatters) {
   return formattingTokensRegExp
 }
 
-var index$31 = buildFormattingTokensRegExp;
+var build_formatting_tokens_reg_exp = buildFormattingTokensRegExp;
 
 function buildFormatLocale () {
   // Note: in English, the names of days of the week and months are capitalized.
@@ -700,7 +700,7 @@ function buildFormatLocale () {
 
   return {
     formatters: formatters,
-    formattingTokensRegExp: index$31(formatters)
+    formattingTokensRegExp: build_formatting_tokens_reg_exp(formatters)
   }
 }
 
@@ -719,11 +719,11 @@ function ordinal (number) {
   return number + 'th'
 }
 
-var index$29 = buildFormatLocale;
+var build_format_locale = buildFormatLocale;
 
-var index$25 = {
-  distanceInWords: index$27(),
-  format: index$29()
+var en = {
+  distanceInWords: build_distance_in_words_locale(),
+  format: build_format_locale()
 };
 
 function format (dirtyDate, dirtyFormatStr, dirtyOptions) {
@@ -731,8 +731,8 @@ function format (dirtyDate, dirtyFormatStr, dirtyOptions) {
   var options = dirtyOptions || {};
 
   var locale = options.locale;
-  var localeFormatters = index$25.format.formatters;
-  var formattingTokensRegExp = index$25.format.formattingTokensRegExp;
+  var localeFormatters = en.format.formatters;
+  var formattingTokensRegExp = en.format.formattingTokensRegExp;
   if (locale && locale.format && locale.format.formatters) {
     localeFormatters = locale.format.formatters;
 
@@ -741,9 +741,9 @@ function format (dirtyDate, dirtyFormatStr, dirtyOptions) {
     }
   }
 
-  var date = index$3(dirtyDate);
+  var date = parse_1(dirtyDate);
 
-  if (!index$23(date)) {
+  if (!is_valid(date)) {
     return 'Invalid Date'
   }
 
@@ -780,12 +780,12 @@ var formatters = {
 
   // Day of year: 1, 2, ..., 366
   'DDD': function (date) {
-    return index$1(date)
+    return get_day_of_year(date)
   },
 
   // Day of year: 001, 002, ..., 366
   'DDDD': function (date) {
-    return addLeadingZeros(index$1(date), 3)
+    return addLeadingZeros(get_day_of_year(date), 3)
   },
 
   // Day of week: 0, 1, ..., 6
@@ -800,12 +800,12 @@ var formatters = {
 
   // ISO week: 1, 2, ..., 53
   'W': function (date) {
-    return index$13(date)
+    return get_iso_week(date)
   },
 
   // ISO week: 01, 02, ..., 53
   'WW': function (date) {
-    return addLeadingZeros(index$13(date), 2)
+    return addLeadingZeros(get_iso_week(date), 2)
   },
 
   // Year: 00, 01, ..., 99
@@ -820,12 +820,12 @@ var formatters = {
 
   // ISO week-numbering year: 00, 01, ..., 99
   'GG': function (date) {
-    return String(index$21(date)).substr(2)
+    return String(get_iso_year(date)).substr(2)
   },
 
   // ISO week-numbering year: 1900, 1901, ..., 2099
   'GGGG': function (date) {
-    return index$21(date)
+    return get_iso_year(date)
   },
 
   // Hour: 0, 1, ... 23
@@ -963,18 +963,18 @@ function addLeadingZeros (number, targetLength) {
   return output
 }
 
-var index = format;
+var format_1 = format;
 
 var span = document.querySelector('#time-now');
 
 function update() {
-	span.textContent = index(new Date(), 'h:mm:ssa');
+	span.textContent = format_1(new Date(), 'h:mm:ssa');
 	setTimeout(update, 1000);
 }
 
-// even though Rollup is bundling all your files together, errors and
-// logs will still point to your original source modules
-console.log('if you have sourcemaps enabled in your devtools, click on main.js:5 -->');
+console.log(
+  "if you have sourcemaps enabled in your devtools, click on main.js:5 -->",
+);
 
 update();
 
