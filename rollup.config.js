@@ -1,3 +1,4 @@
+import atImport from "postcss-import";
 import commonjs from "rollup-plugin-commonjs";
 import cssnext from "postcss-cssnext";
 import postcss from "rollup-plugin-postcss";
@@ -19,7 +20,7 @@ export default {
     commonjs(), // converts date-fns to ES modules
     postcss({
       extract: true,
-      plugins: [cssnext({ warnForDuplicates: false })],
+      plugins: [cssnext({ warnForDuplicates: false }), atImport()],
     }),
     production && uglify(), // minify, but only in production
   ],

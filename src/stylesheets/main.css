@@ -1,9 +1,13 @@
+@import "reset-css";
+
 :root {
   --red: red;
 }
 
 body {
   color: color(var(--red) a(54%));
+  margin: 0;
+  padding: 0;
 }
 
 .oorl {
