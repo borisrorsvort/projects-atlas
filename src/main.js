@@ -11,25 +11,25 @@ import * as THREE from "three";
   //   return;
   // }
 
-  var width = window.innerWidth,
-    height = window.innerHeight;
+  let width = window.innerWidth;
+  let height = window.innerHeight;
 
   // Earth params
-  var radius = 0.5,
-    segments = 32,
-    rotation = 6;
+  let radius = 0.5;
+  let segments = 32;
+  let rotation = 10.5;
 
-  var scene = new THREE.Scene();
+  let scene = new THREE.Scene();
 
-  var camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 1000);
-  camera.position.z = 1.5;
+  let camera = new THREE.PerspectiveCamera(45, width / height, 0.01, 1000);
+  camera.position.z = 1.5; // How far from us
 
   var renderer = new THREE.WebGLRenderer();
   renderer.setSize(width, height);
 
-  scene.add(new THREE.AmbientLight(0x333333));
+  scene.add(new THREE.AmbientLight(0xcccccc));
 
-  var light = new THREE.DirectionalLight(0xffffff, 1);
+  var light = new THREE.DirectionalLight(0xffffff, 0.2);
   light.position.set(5, 3, 5);
   scene.add(light);
 
@@ -91,3 +91,13 @@ import * as THREE from "three";
     );
   }
 })();
+
+if (ENV !== "production") {
+  // Enable LiveReload
+  document.write(
+    '<script src="http://' +
+      (location.host || "localhost").split(":")[0] +
+      ':35729/livereload.js?snipver=1"></' +
+      "script>",
+  );
+}
