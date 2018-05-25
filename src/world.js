@@ -62,8 +62,6 @@ export default class World {
   }
 
   initRenderer() {
-    console.log(this.width, this.height);
-
     this.renderer.setSize(this.width, this.height);
   }
 

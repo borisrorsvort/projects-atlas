@@ -2,26 +2,38 @@ import "./stylesheets/main.css";
 
 import * as THREE from "three";
 
+import { json, tsv } from "d3";
+
 import World from "./world";
 
-(function() {
+function initWorld(geojson, countryNames) {
+  console.log(geojson, countryNames);
+
   var webglEl = document.getElementById("webgl");
   var world = new World();
 
-  const { camera, scene, sphere, clouds, renderer } = world;
-
   world.init();
 
-  webglEl.appendChild(renderer.domElement);
+  webglEl.appendChild(world.renderer.domElement);
 
   render();
 
   function render() {
-    sphere.rotation.y += 0.0005;
-    clouds.rotation.y += 0.0005;
+    world.sphere.rotation.y += 0.0005;
+    world.clouds.rotation.y += 0.0005;
     requestAnimationFrame(render);
-    renderer.render(scene, camera);
+    world.render();
   }
+}
+
+(function() {
+  window.addEventListener("DOMContentLoaded", function() {
+    json("world.json").then(geojson => {
+      tsv("world-country-names.tsv").then(countryNames =>
+        initWorld(geojson, countryNames),
+      );
+    });
+  });
 })();
 
 // Enable LiveReload
