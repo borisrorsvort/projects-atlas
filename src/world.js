@@ -4,8 +4,8 @@ export default class World {
   constructor() {
     this.width = window.innerWidth;
     this.height = window.innerHeight;
-    this.radius = 0.5;
-    this.segments = 32;
+    this.radius = 0.7;
+    this.segments = 155;
     this.rotation = 10.5;
     this.scene = new THREE.Scene();
     this.sphere = this.createSphere();

@@ -1,13 +1,18 @@
 import "./stylesheets/main.css";
 
 import * as THREE from "three";
+import * as topojson from "topojson";
 
+import { bordersTexture, topoFeatures } from "./mapUtils";
 import { json, tsv } from "d3";
 
 import World from "./world";
 
 function initWorld(geojson, countryNames) {
-  console.log(geojson, countryNames);
+  const countriesTopoGson = topoFeatures(geojson);
+  const borders = bordersTexture(geojson);
+
+  console.log(countriesTopoGson, borders);
 
   var webglEl = document.getElementById("webgl");
   var world = new World();
